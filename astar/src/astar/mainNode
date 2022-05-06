@@ -198,91 +198,7 @@ def takeInput():
 
     return start_point, goal_point
 
-# def plot_map(points):
-#         fig, ax = plt.subplots()
-#         ax.set(xlim=(0, 100), ylim=(0, 100))
 
-#         c1 = plt.Circle((20, 80), 10, fill=True)
-#         c2 = plt.Circle((20, 20), 10, fill=True)
-#         currentAxis = plt.gca()
-#         currentAxis.add_patch(Rectangle((2.5, 42.5), 15, 15, fill=True, alpha=1))
-#         currentAxis.add_patch(Rectangle((37.5, 42.5), 25, 15, fill=True, alpha=1))
-#         currentAxis.add_patch(Rectangle((72.5, 20), 15, 20, fill=True, alpha=1))
-#         currentAxis.add_patch(Rectangle((0, 0), 100, 100, fill=None, alpha=1))
-       
-#         ax.add_artist(c1)
-#         ax.add_artist(c2)
-#         ax.set_aspect('equal')
-
-#         plt.grid()
-
-#         for point in points:
-
-#             for action in actions:
-#                 Xs, Ys = cuvrePoints(point, action[0], action[1])
-#                 if isInObstacle([Xs[-1],Ys[-1]]):
-#                     continue
-#                 else:
-#                     plt.plot(Xs, Ys, color="green")
-#             plt.pause(0.001)
-
-
-
-# def velocity_inputs(node, radius, wheel_distance):
-
-#     r = radius
-#     L = wheel_distance
-#     print("node:",node)
-#     rpm_UL = (actions[node[3]][0])*2*math.pi/60
-#     rpm_UR = (actions[node[3]][1])*2*math.pi/60
-
-#     theta_dot = (r / L) * (rpm_UR - rpm_UL)
-
-#     vel_mag = math.sqrt(math.pow((0.5*r * (rpm_UL + rpm_UR) * np.cos(node[2])),2)+math.pow((0.5*r * (rpm_UL + rpm_UR) * np.sin(node[2])),2))
-     
-#     # vel_mag = (r / 2) * (rpm_UL + rpm_UR)
-#     return vel_mag, theta_dot
-
-# def move_turtlebot(path, radius, wheel_distance):
-    
-#     msg = geometry_msgs.msg.Twist()
-#     rospy.init_node('move_tt', anonymous=True)
-#     pub = rospy.Publisher('/cmd_vel', geometry_msgs.msg.Twist, queue_size=100)
-#     msg.linear.x = 0.0
-#     msg.angular.z = 0.0
-
-
-#     pub.publish(msg)
-#     rpms = []
-    
-#     # for i in range (len(path)):
-#     #     rpms.append(actions[path[i][3]])
-#     #     rospy.loginfo(rpms)
-#     # c = 0
-#     r = rospy.Rate(10)
-
-
-#     while not rospy.is_shutdown():  
-#         for point in path:
-
-#             print("action:", point[3])
-#             vel, th = velocity_inputs(point, radius, wheel_distance)
-#             msg.angular.y = 0
-#             msg.angular.x = 0
-
-#             msg.angular.z =  th/10
-#             msg.linear.x = vel/10      
-#             # msg.angular.z =  th/0.9
-#             # msg.linear.x = vel/3.8
-
-#             msg.linear.y = 0
-#             msg.linear.z = 0
-#             end_time = rospy.Time.now() + rospy.Duration(1)
-
-#             while rospy.Time.now() < end_time:
-#                 pub.publish(msg)
-
-#                 r.sleep()
 def move_robot(pub_vel, dvx, dvy, dw):
     r = rospy.Rate(100)
     vel_value = geometry_msgs.msg.Twist()
@@ -354,8 +270,6 @@ if __name__=='__main__':
         if (end_point[0])-30 <= current_point[0] <= (end_point[0])+30 and (end_point[1])-30 <= current_point[1] <= (end_point[1])+30 :
             print("goal reached")
 
-            # plotCurves(explored)
-            # print("current point at goal:", current_point)
 
             path = backTrack(parent,current_point, start_point,cmap.gmap)
 
